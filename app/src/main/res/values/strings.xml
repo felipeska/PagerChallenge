@@ -1,4 +1,7 @@
 <resources>
-    <string name="app_name">Challenge</string>
-    <string name="main_activity_title">Engineering</string>
+  <string name="app_name">Challenge</string>
+  <string name="main_activity_title">Engineering</string>
+  <string name="label_languages">Languages: %s</string>
+  <string name="label_skills">Skills: %s</string>
+
 </resources>
