@@ -3,5 +3,6 @@
   <string name="main_activity_title">Engineering</string>
   <string name="label_languages">Languages: %s</string>
   <string name="label_skills">Skills: %s</string>
-
+  <string name="label_status">Status: %s</string>
+  <string name="not_status">Status: Not available</string>
 </resources>

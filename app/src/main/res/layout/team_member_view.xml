@@ -49,7 +49,7 @@
       android:layout_height="wrap_content"
       android:layout_below="@id/team_member_role"
       android:layout_toEndOf="@id/team_member_avatar"
-      android:textColor="?android:attr/textColorSecondary"
+      android:textColor="?android:attr/textColorPrimary"
       android:textSize="@dimen/display_text_secondary"
       android:maxLines="1"
       android:layout_marginTop="@dimen/margin_min"
@@ -70,7 +70,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textColor="?android:attr/textColorSecondary"
-        android:textSize="@dimen/display_text_alternative"
+        android:textSize="@dimen/display_text_secondary"
         tools:text="Languages: English, Spanish"
         />
     <TextView
@@ -80,8 +80,20 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textColor="?android:attr/textColorSecondary"
-        android:textSize="@dimen/display_text_alternative"
+        android:textSize="@dimen/display_text_secondary"
         tools:text="Skills: Android, Java"
+        />
+
+    <TextView
+        android:layout_marginTop="@dimen/margin_min"
+        android:id="@+id/team_member_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="@dimen/display_text_secondary"
+        android:textStyle="bold"
+        tools:text="Status: Working"
         />
   </LinearLayout>
 </com.pager.challenge.view.layout.TeamMemberItemView>

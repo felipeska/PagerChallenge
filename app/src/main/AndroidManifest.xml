@@ -14,7 +14,10 @@
       android:supportsRtl="true"
       android:theme="@style/AppTheme"
       >
-    <activity android:name=".view.activity.TeamMemberListActivity">
+    <activity
+        android:name=".view.activity.TeamMemberListActivity"
+        android:configChanges="screenSize|orientation|keyboardHidden"
+        >
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
 

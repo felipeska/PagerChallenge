@@ -1,29 +1,27 @@
 package com.pager.challenge.data.model;
 
+import java.util.List;
+
 public class TeamMemberDataModel {
 
-  private final String name;
-  private final String githubUsername;
-  private final String avatarUrl;
-  private final String location;
+  public final String name;
+  public final String github;
+  public final String avatar;
+  public final String location;
+  public final int role;
+  public final String gender;
+  public final List<String> languages;
+  public final List<String> tags;
 
-  public TeamMemberDataModel(String name, String githubUsername, String avatarUrl,
-      String location) {
+  public TeamMemberDataModel(String name, String avatar, String github, int role, String gender,
+      String location, List<String> languages, List<String> tags) {
     this.name = name;
-    this.githubUsername = githubUsername;
-    this.avatarUrl = avatarUrl;
+    this.github = github;
+    this.avatar = avatar;
+    this.role = role;
+    this.gender = gender;
     this.location = location;
-  }
-
-  public String getGithubUsername() {
-    return githubUsername;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public String getAvatarUrl() {
-    return avatarUrl;
+    this.languages = languages;
+    this.tags = tags;
   }
 }

@@ -74,6 +74,7 @@ public class TeamMemberListFragment extends BaseFragment implements TeamMemberLi
 
       }
     });
+    teamMemberListView.setHasFixedSize(true);
     teamMemberListView.setLayoutManager(new LinearLayoutManager(getContext()));
     teamMemberListView.addItemDecoration(
         new DividerItemDecoration(getContext(), VERTICAL_LIST, dividerPaddingStart, false));
