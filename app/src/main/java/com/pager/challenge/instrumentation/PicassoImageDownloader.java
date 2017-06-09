@@ -26,6 +26,7 @@ public class PicassoImageDownloader implements ImageDownloader {
   }
 
   @Override public void downloadImage(@NonNull String imageUrl, ImageView view) {
+    if (imageUrl.isEmpty()) return;
     Picasso.with(context)
         .load(imageUrl)
         .placeholder(R.drawable.avatar_placeholder)

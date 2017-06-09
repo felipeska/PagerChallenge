@@ -3,9 +3,11 @@ package com.pager.challenge.di;
 import android.app.Application;
 import com.pager.challenge.PagerApplication;
 import com.pager.challenge.data.di.RepositoriesProvider;
+import com.pager.challenge.data.socket.SocketService;
 import com.pager.challenge.domain.executor.PostExecutionThread;
 import com.pager.challenge.domain.executor.ThreadExecutor;
 import com.pager.challenge.instrumentation.di.InstrumentationProvider;
+import com.pager.challenge.navigation.Navigator;
 import dagger.Component;
 import javax.inject.Singleton;
 
@@ -18,4 +20,6 @@ import javax.inject.Singleton;
   ThreadExecutor threadExecutor();
 
   PostExecutionThread postExecutionThread();
+
+  Navigator getNavigator();
 }

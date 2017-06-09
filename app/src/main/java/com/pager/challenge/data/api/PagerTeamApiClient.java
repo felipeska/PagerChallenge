@@ -1,5 +1,6 @@
 package com.pager.challenge.data.api;
 
+import com.pager.challenge.data.cache.RolesCache;
 import com.pager.challenge.data.model.TeamMemberDataModel;
 import com.pager.challenge.domain.TeamMember;
 import io.reactivex.Observable;
@@ -14,8 +15,11 @@ public class PagerTeamApiClient {
 
   private final PagerTeamService apiService;
 
-  public PagerTeamApiClient(Retrofit retrofit) {
+  private final RolesCache rolesCache;
+
+  public PagerTeamApiClient(Retrofit retrofit, RolesCache rolesCache) {
     this.apiService = retrofit.create(PagerTeamService.class);
+    this.rolesCache = rolesCache;
   }
 
   public Observable<List<TeamMember>> members() {
@@ -24,6 +28,8 @@ public class PagerTeamApiClient {
           @Override
           public List<TeamMember> apply(@NonNull List<TeamMemberDataModel> teamMemberDataModels,
               @NonNull Map<String, String> roles) throws Exception {
+
+            rolesCache.putAll(roles);
 
             List<TeamMember> teamMembers = new ArrayList<>(teamMemberDataModels.size());
             for (TeamMemberDataModel teamMemberDataModel : teamMemberDataModels) {

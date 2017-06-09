@@ -38,6 +38,14 @@ public class TeamMemberListAdapter extends RecyclerView.Adapter<TeamMemberAdapte
     cache.update(members);
   }
 
+  public void add(TeamMember teamMember) {
+    cache.add(teamMember);
+  }
+
+  public void update(String username, String status) {
+    cache.update(username, status);
+  }
+
   @Override public TeamMemberAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     TeamMemberItemView view = (TeamMemberItemView) LayoutInflater.from(parent.getContext())
         .inflate(R.layout.team_member_view, parent, false);

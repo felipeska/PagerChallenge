@@ -1,6 +1,7 @@
 package com.pager.challenge.view.fragment;
 
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -54,7 +55,6 @@ public class TeamMemberListFragment extends BaseFragment implements TeamMemberLi
 
   @Override public void onResume() {
     super.onResume();
-    presenter.onRequestRefreshTeamMembers();
   }
 
   @Override public void onViewReady() {
@@ -71,7 +71,7 @@ public class TeamMemberListFragment extends BaseFragment implements TeamMemberLi
 
     adapter.setOnTeamMemberClickListener(new TeamMemberListAdapter.OnTeamMemberClickListener() {
       @Override public void onTeamMemberClick(@NonNull TeamMember member) {
-
+        presenter.onRequestTeamMemberUpdateStatus(getActivity(), member);
       }
     });
     teamMemberListView.setHasFixedSize(true);
@@ -105,6 +105,10 @@ public class TeamMemberListFragment extends BaseFragment implements TeamMemberLi
     adapter.update(members);
   }
 
+  @Override public void newTeamMember(TeamMember teamMember) {
+    adapter.add(teamMember);
+  }
+
   @Override public void showLoading() {
     if (isAdded()) {
       loadingBehavior.showLoading();
@@ -115,5 +119,17 @@ public class TeamMemberListFragment extends BaseFragment implements TeamMemberLi
     if (isAdded()) {
       loadingBehavior.hideLoading();
     }
+  }
+
+  @Override public void updateStatus(String member, String status) {
+    adapter.update(member, status);
+  }
+
+  @Override public void connectionFailed() {
+    Snackbar.make(teamMemberListView, R.string.error_message, Snackbar.LENGTH_LONG).show();
+  }
+
+  @Override public void startingConnection() {
+    Snackbar.make(teamMemberListView, R.string.connecting_message, Snackbar.LENGTH_LONG).show();
   }
 }

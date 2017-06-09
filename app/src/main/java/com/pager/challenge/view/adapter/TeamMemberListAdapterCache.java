@@ -10,6 +10,8 @@ public class TeamMemberListAdapterCache {
   private final LongSparseArray<TeamMember> dataSet;
   private final RecyclerView.Adapter adapter;
 
+  private final static int INDEX_NOT_FOUND = -1;
+
   public TeamMemberListAdapterCache(RecyclerView.Adapter adapter) {
     this.adapter = adapter;
     this.dataSet = new LongSparseArray<>();
@@ -37,6 +39,31 @@ public class TeamMemberListAdapterCache {
   public void update(List<TeamMember> members) {
     insertNewTeamMembers(members);
     removeTeamMembers(members);
+  }
+
+  public void add(TeamMember teamMember) {
+    dataSet.put(teamMember.hashCode(), teamMember);
+    int adapterPosition = dataSet.indexOfValue(teamMember);
+    adapter.notifyItemInserted(adapterPosition);
+  }
+
+  public void update(String username, String status) {
+    int index = findTeamMemberIndexByName(username);
+    TeamMember oldMember = dataSet.valueAt(index);
+    TeamMember newMember =
+        new TeamMember(oldMember.getName(), oldMember.getAvatar(), oldMember.getUsername(),
+            oldMember.getRole(), oldMember.getGender(), oldMember.getLanguages(),
+            oldMember.getTags(), oldMember.getLocation(), status);
+    dataSet.put(oldMember.hashCode(), newMember);
+    adapter.notifyItemChanged(index);
+  }
+
+  private int findTeamMemberIndexByName(String name) {
+    for (int i = 0; i < dataSet.size(); i++) {
+      TeamMember member = dataSet.valueAt(i);
+      if (member.getUsername().equals(name)) return i;
+    }
+    return INDEX_NOT_FOUND;
   }
 
   private void insertNewTeamMembers(List<TeamMember> members) {
@@ -71,9 +98,7 @@ public class TeamMemberListAdapterCache {
 
   private LongSparseArray<TeamMember> toMap(List<TeamMember> members) {
     LongSparseArray result = new LongSparseArray(members.size());
-    for (TeamMember member : members) {
-      result.put(member.hashCode(), member);
-    }
+    for (TeamMember member : members) result.put(member.hashCode(), member);
     return result;
   }
 }

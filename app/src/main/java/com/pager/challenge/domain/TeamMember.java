@@ -1,9 +1,11 @@
 package com.pager.challenge.domain;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import java.util.List;
 import java.util.Objects;
 
-public class TeamMember {
+public class TeamMember implements Parcelable {
 
   private final String name;
   private final String avatar;
@@ -76,5 +78,44 @@ public class TeamMember {
 
   @Override public int hashCode() {
     return Objects.hash(name, avatar, username, role, gender, languages, tags, location);
+  }
+
+  @Override public int describeContents() {
+    return 0;
+  }
+
+  @Override public void writeToParcel(Parcel dest, int flags) {
+    dest.writeString(this.name);
+    dest.writeString(this.avatar);
+    dest.writeString(this.username);
+    dest.writeString(this.location);
+    dest.writeString(this.role);
+    dest.writeString(this.status);
+    dest.writeString(this.gender);
+    dest.writeStringList(this.languages);
+    dest.writeStringList(this.tags);
+  }
+
+  public static final Parcelable.Creator<TeamMember> CREATOR =
+      new Parcelable.Creator<TeamMember>() {
+        public TeamMember createFromParcel(Parcel in) {
+          return new TeamMember(in);
+        }
+
+        public TeamMember[] newArray(int size) {
+          return new TeamMember[size];
+        }
+      };
+
+  private TeamMember(Parcel in) {
+    this.name = in.readString();
+    this.avatar = in.readString();
+    this.username = in.readString();
+    this.location = in.readString();
+    this.role = in.readString();
+    this.status = in.readString();
+    this.gender = in.readString();
+    this.languages = in.createStringArrayList();
+    this.tags = in.createStringArrayList();
   }
 }
