@@ -61,9 +61,8 @@ public class TeamMemberListAdapter extends RecyclerView.Adapter<TeamMemberAdapte
     return cache.size();
   }
 
-  @Override public void onViewHolderClick(int position) {
+  @Override public void onViewHolderClick(TeamMember teamMember) {
     if (listener != null) {
-      TeamMember teamMember = cache.get(position);
       listener.onTeamMemberClick(teamMember);
     }
   }

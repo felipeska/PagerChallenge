@@ -12,6 +12,7 @@ public class TeamMemberAdapterViewHolder extends RecyclerView.ViewHolder {
   private final TeamMemberItemView itemView;
   private final OnViewHolderClickListener listener;
   private final ImageDownloader imageDownloader;
+  private TeamMember teamMember;
 
   public TeamMemberAdapterViewHolder(TeamMemberItemView teamMemberItemView,
       @NonNull OnViewHolderClickListener listener, ImageDownloader imageDownloader) {
@@ -25,17 +26,17 @@ public class TeamMemberAdapterViewHolder extends RecyclerView.ViewHolder {
   private void initializeListeners() {
     itemView.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View view) {
-        int position = getAdapterPosition();
-        listener.onViewHolderClick(position);
+        listener.onViewHolderClick(teamMember);
       }
     });
   }
 
   public interface OnViewHolderClickListener {
-    void onViewHolderClick(int position);
+    void onViewHolderClick(TeamMember teamMember);
   }
 
   public void bindTo(TeamMember teamMember) {
+    this.teamMember = teamMember;
     itemView.bindTo(teamMember, imageDownloader);
   }
 }
