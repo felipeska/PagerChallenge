@@ -25,8 +25,12 @@ import javax.inject.Singleton;
     return apiClient.members();
   }
 
-  @Override public void open(@NonNull EventListener eventListener) {
-    socketServiceDelegate.open(eventListener);
+  @Override public void registerListenerEvents(@NonNull EventListener eventListener) {
+    socketServiceDelegate.registerListenerEvents(eventListener);
+  }
+
+  @Override public void unregisterListenerEvents(@NonNull EventListener eventListener) {
+    socketServiceDelegate.unregisterListenerEvents(eventListener);
   }
 
   @Override public void sendUpdateStatus(String username, String state) {

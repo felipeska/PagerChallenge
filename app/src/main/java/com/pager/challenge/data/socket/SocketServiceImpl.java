@@ -12,6 +12,8 @@ import com.pager.challenge.domain.event.model.Event;
 import com.pager.challenge.domain.event.model.NewUserEvent;
 import com.pager.challenge.domain.event.model.UserEvent;
 import com.pager.challenge.domain.event.model.UpdateStatusEvent;
+import java.util.ArrayList;
+import java.util.List;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -28,25 +30,33 @@ public class SocketServiceImpl implements SocketService {
 
   private final RolesCache rolesCache;
 
+  private List<EventListener> listeners;
+
   public SocketServiceImpl(String socketUrl, OkHttpClient okHttpClient, Gson gson,
       RolesCache rolesCache) {
     this.socketUrl = socketUrl;
     this.okHttpClient = okHttpClient;
     this.gson = gson;
     this.rolesCache = rolesCache;
+    this.listeners = new ArrayList<>();
+    connectWithSocket();
   }
 
-  @Override public void open(@NonNull final EventListener eventListener) {
-    webSocket = okHttpClient.newWebSocket(new Request.Builder().url(socketUrl).build(),
+  private void connectWithSocket() {
+    this.webSocket = okHttpClient.newWebSocket(new Request.Builder().url(socketUrl).build(),
         new WebSocketListener() {
           @Override public void onOpen(WebSocket webSocket, Response response) {
             super.onOpen(webSocket, response);
-            eventListener.onEventStart();
+            for (EventListener listener : listeners) {
+              listener.onEventStart();
+            }
           }
 
           @Override public void onMessage(WebSocket webSocket, String text) {
             super.onMessage(webSocket, text);
-            eventListener.onNewEvent(eventParser(text));
+            for (EventListener listener : listeners) {
+              listener.onNewEvent(eventParser(text));
+            }
           }
 
           @Override public void onClosed(WebSocket webSocket, int code, String reason) {
@@ -55,7 +65,10 @@ public class SocketServiceImpl implements SocketService {
 
           @Override public void onFailure(WebSocket webSocket, Throwable t, Response response) {
             super.onFailure(webSocket, t, response);
-            eventListener.onEventFailure(t);
+            for (EventListener listener : listeners) {
+              listener.onEventFailure(t);
+            }
+            connectWithSocket();
           }
         });
   }
@@ -81,8 +94,16 @@ public class SocketServiceImpl implements SocketService {
         teamMemberDataModel.languages, teamMemberDataModel.tags, teamMemberDataModel.location, "");
   }
 
+  @Override public void registerListenerEvents(@NonNull EventListener eventListener) {
+    this.listeners.add(eventListener);
+  }
+
+  @Override public void unregisterListenerEvents(@NonNull EventListener eventListener) {
+    this.listeners.remove(eventListener);
+  }
+
   @Override public void sendUpdateStatus(String username, String state) {
-    if (webSocket == null) return;
+    if (webSocket == null) connectWithSocket();
     UpdateStatusEvent updateStatusEvent = new UpdateStatusEvent(username, state);
     String event = gson.toJson(updateStatusEvent);
     webSocket.send(event);
@@ -91,5 +112,6 @@ public class SocketServiceImpl implements SocketService {
   @Override public void close() {
     if (webSocket == null) return;
     webSocket.close(1000, "Closing socket...");
+    listeners.clear();
   }
 }

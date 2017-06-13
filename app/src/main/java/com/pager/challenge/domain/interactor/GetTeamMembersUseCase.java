@@ -25,8 +25,12 @@ public class GetTeamMembersUseCase extends BaseUseCase<List<TeamMember>, Void> {
     return repository.teamMembers();
   }
 
-  public void startConnection(@NonNull final EventListener eventListener) {
-    repository.open(eventListener);
+  public void registerListener(@NonNull final EventListener eventListener) {
+    repository.registerListenerEvents(eventListener);
+  }
+
+  public void unregisterListener(@NonNull final EventListener eventListener){
+    repository.unregisterListenerEvents(eventListener);
   }
 
   public void closeConnection() {

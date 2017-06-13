@@ -7,12 +7,9 @@ import com.pager.challenge.domain.TeamMember;
 import com.pager.challenge.domain.event.EventListener;
 import com.pager.challenge.domain.event.model.NewUserEvent;
 import com.pager.challenge.domain.event.model.UpdateStatusEvent;
-import com.pager.challenge.domain.event.model.UserEvent;
 import com.pager.challenge.domain.interactor.DefaultObserver;
 import com.pager.challenge.domain.interactor.GetTeamMembersUseCase;
 import com.pager.challenge.navigation.Navigator;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -23,6 +20,8 @@ public class TeamMemberListPresenterImpl extends BasePresenter<TeamMemberListPre
   private final GetTeamMembersUseCase useCase;
   private final Navigator navigator;
 
+  private EventListener eventListener;
+
   @Inject public TeamMemberListPresenterImpl(GetTeamMembersUseCase useCase, Navigator navigator) {
     this.useCase = useCase;
     this.navigator = navigator;
@@ -30,7 +29,7 @@ public class TeamMemberListPresenterImpl extends BasePresenter<TeamMemberListPre
 
   @Override protected void onPresenterReady() {
     super.onPresenterReady();
-    this.useCase.startConnection(new EventListener() {
+    eventListener = new EventListener() {
 
       @Override public void onEventStart() {
         getView().startingConnection();
@@ -41,7 +40,6 @@ public class TeamMemberListPresenterImpl extends BasePresenter<TeamMemberListPre
       }
 
       @Override public void onNewEvent(Event event) {
-        System.out.print(event.event);
         if (event instanceof UpdateStatusEvent) {
           UpdateStatusEvent updateStatusEvent = (UpdateStatusEvent) event;
           getView().updateStatus(updateStatusEvent.user, updateStatusEvent.state);
@@ -50,11 +48,13 @@ public class TeamMemberListPresenterImpl extends BasePresenter<TeamMemberListPre
           getView().newTeamMember(newUserEvent.teamMember);
         }
       }
-    });
+    };
+    useCase.registerListener(eventListener);
   }
 
   @Override protected void onPresenterDestroy() {
     super.onPresenterDestroy();
+    this.useCase.unregisterListener(eventListener);
     this.useCase.closeConnection();
     this.useCase.dispose();
   }

@@ -5,7 +5,9 @@ import com.pager.challenge.domain.event.EventListener;
 
 public interface SocketService {
 
-  void open(@NonNull EventListener eventListener);
+  void registerListenerEvents(@NonNull EventListener eventListener);
+
+  void unregisterListenerEvents(@NonNull EventListener eventListener);
 
   void sendUpdateStatus(String username, String state);
 

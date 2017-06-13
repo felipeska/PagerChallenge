@@ -105,4 +105,20 @@ public class TeamMemberUpdateStatusFragment extends BaseFragment
   @Override public void onClose() {
     closeView();
   }
+
+  @Override public void connectionFailed() {
+    getActivity().runOnUiThread(new Runnable() {
+      @Override public void run() {
+        inputStatus.setEnabled(false);
+      }
+    });
+  }
+
+  @Override public void startingConnection() {
+    getActivity().runOnUiThread(new Runnable() {
+      @Override public void run() {
+        inputStatus.setEnabled(true);
+      }
+    });
+  }
 }

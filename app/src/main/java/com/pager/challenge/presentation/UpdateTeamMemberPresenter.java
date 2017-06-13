@@ -6,5 +6,7 @@ public interface UpdateTeamMemberPresenter extends Presenter<UpdateTeamMemberPre
 
   interface View extends Presenter.View {
     void onClose();
+    void connectionFailed();
+    void startingConnection();
   }
 }
