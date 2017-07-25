@@ -42,11 +42,6 @@ test:
         - ./gradlew check --no-daemon --console=plain --continue
 
     post:
-        # Collect the JUnit reports
-        - mkdir -p $CIRCLE_TEST_REPORTS/reports/junit
-        - find app/build/test-results/ -name "*.xml" -exec cp {} $CIRCLE_TEST_REPORTS/reports/junit/ \;
-
-        # Collect the Android Lint reports
-        - mkdir -p $CIRCLE_TEST_REPORTS/reports/lint
-        - find app/build/reports -name "lint*.html" -exec cp {} $CIRCLE_TEST_REPORTS/reports/lint/ \;
-        - find app/build/reports -name "lint*.xml" -exec cp {} $CIRCLE_TEST_REPORTS/reports/lint/ \;
+        # Collect all reports
+        - mkdir -p $CIRCLE_TEST_REPORTS/reports/
+        - find app/build/reports/ -name "*.*" -exec cp {} $CIRCLE_TEST_REPORTS/reports/ \;
