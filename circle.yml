@@ -44,4 +44,4 @@ test:
     post:
         # Collect all reports
         - mkdir -p $CIRCLE_TEST_REPORTS/reports/
-        - find app/build/reports/ -name "*.*" -exec cp {} $CIRCLE_TEST_REPORTS/reports/ \;
+        - find app/build/reports/ -name "*.*" -exec cp -R {} $CIRCLE_TEST_REPORTS/reports/ \;
